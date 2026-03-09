@@ -49,7 +49,7 @@ aws ec2 run-instances \
 INSTANCE_ID=$(aws ec2 describe-instances \
 --filters "Name=tag:Name,Values=web-server" \
 --query 'Reservations[0].Instances[0].InstanceId' \
---output text
+--output text \
 --region us-east-1)
 
 echo $INSTANCE_ID
