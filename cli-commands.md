@@ -1,37 +1,38 @@
-## These are commands to be run in AWS CLI 
+# These are commands to be run in AWS CLI 
 
 ### Get VPC-ID
 ```
-VPC_ID=$(aws ec2 describe-vpcs \
---query "Vpcs[].VpcId" \
---output text)
-
-echo $VPC_ID
-```
-### Create Security Group
-```
 aws ec2 create-security-group \
---group-name web-server-sg \
+--group-name web-server_sg \
 --description "security group for web server" \
 --vpc-id vpc-07402b7fc0701cebb
 ```
+
+### Create Security Group
+```
+aws ec2 create-security-group \
+--group-name web-server_sg \
+--description "security group for web server" \
+--vpc-id vpc-07402b7fc0701cebb
+```
+
 ### Get SG-ID
 ```
 SG_ID=$(aws ec2 describe-security-groups \
---filters "Name=group-name,Values=web-server-sg" \
+--filters "Name=group-name,Values=launch-wizard-1" \
 --query 'SecurityGroups[0].GroupId'  \
 --output text)
 
 echo $SG_ID
-```
+
 ### Create new inbound rule
-```
 aws ec2 authorize-security-group-ingress \
 --group-id $SG_ID \
 --protocol tcp \
 --port 80 \
 --cidr 0.0.0.0/0
 ```
+
 ### Install EC2 Instance
 ```
 aws ec2 run-instances \
@@ -44,18 +45,25 @@ aws ec2 run-instances \
 --key-name vockey \
 --user-data file://nginx-install.sh
 ```
+
 ### Terminate EC2 Instance
 ```
 INSTANCE_ID=$(aws ec2 describe-instances \
 --filters "Name=tag:Name,Values=web-server" \
 --query 'Reservations[0].Instances[0].InstanceId' \
---output text \
---region us-east-1)
+--output text --region us-east-1)
 
 echo $INSTANCE_ID
 
 aws ec2 terminate-instances \
 --instance-ids $INSTANCE_ID \
+--region us-east-1
+```
+
+### Create S3 Bucket
+```
+aws s3api create-bucket \
+--bucket web-bucket67512 \
 --region us-east-1
 ```
 
