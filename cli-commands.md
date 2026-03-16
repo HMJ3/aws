@@ -114,5 +114,25 @@ aws ec2 associate-iam-instance-profile \
   --iam-instance-profile Name=web-server-profile
 ```
 
+### Final EC2 instance command
+```
+SG_ID=$(aws ec2 describe-security-groups \
+--filters "Name=group-name,Values=web-server-sg" \
+--query 'SecurityGroups[0].GroupId'  \
+--output text)
+echo $SG_ID
+
+aws ec2 run-instances \
+--image-id ami-02dfbd4ff395f2a1b \
+--count 1 \
+--instance-type t3.micro \
+--region us-east-1 \
+--tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=web-server}]' \
+--security-group-ids $SG_ID \
+--key-name vockey \
+--iam-instance-profile Name=web-server-profile \
+--user-data file://nginx-install.sh
+```
+
 
 
