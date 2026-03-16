@@ -1,6 +1,6 @@
 # Setup Bastion Host in AWS cloud-shell
 
-´´´
+```
 VPC_ID=$(aws ec2 describe-vpcs \
 --query "Vpcs[].VpcId" \
 --output text)
@@ -37,4 +37,4 @@ aws ec2 run-instances \
 --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=bastion-host}]' \
 --security-group-ids $SG_ID \
 --key-name vockey
-´´´
+```
