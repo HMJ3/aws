@@ -23,12 +23,6 @@ aws ec2 authorize-security-group-ingress \
 --port 22 \
 --cidr 0.0.0.0/0
 
-SG_ID=$(aws ec2 describe-security-groups \
---filters "Name=group-name,Values=bastion-host-sg" \
---query 'SecurityGroups[0].GroupId'  \
---output text)
-echo $SG_ID
-
 aws ec2 run-instances \
 --image-id ami-02dfbd4ff395f2a1b \
 --count 1 \
