@@ -71,6 +71,9 @@ aws s3api create-bucket \
 --region us-east-1
 ```
 ### Create instance profile
+
+Created instances: web-server-profile (16.2.2026)
+
 ```
 aws iam create-instance-profile \
     --instance-profile-name web-server-profile
@@ -89,13 +92,22 @@ Output
 
 ```
 
-### Attach role to instance profile
+### Manage Profiles
+
+Source - https://stackoverflow.com/a/72966105
 
 ```
-aws iam add-role-to-instance-profile \
-    --instance-profile-name web-server-profile \
-    --role-name LabRole
+aws iam delete-instance-profile \
+    --instance-profile-name 'your-profile-name'
 ```
+
+aws iam remove-role-from-instance-profile \
+    --role-name ExistingRole \
+    --instance-profile-name web-server-profile
+
+aws iam add-role-to-instance-profile \
+    --role-name LabRole \
+    --instance-profile-name web-server-profile
 
 ### Add to running EC2 instance
 ```
