@@ -1,6 +1,7 @@
-# Configure Web-Server
+#!/bin/bash
 
-```
+# ── Configure Web Server ────────────────────────────────────────────────────
+
 # Get VPC ID
 VPC_ID=$(aws ec2 describe-vpcs \
 --query "Vpcs[].VpcId" \
@@ -27,11 +28,9 @@ aws ec2 authorize-security-group-ingress \
 --protocol tcp \
 --port 80 \
 --cidr 0.0.0.0/0
-```
 
-# Launch Web Server
+# ── Launch Web Server ───────────────────────────────────────────────────────
 
-```
 # Get Security Group ID
 SG_ID=$(aws ec2 describe-security-groups \
 --filters "Name=group-name,Values=web-server-sg" \
@@ -48,12 +47,12 @@ aws ec2 run-instances \
 --region us-east-1 \
 --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=web-server}]' \
 --security-group-ids $SG_ID \
---key-name vockey
-```
+--key-name vockey \
+--iam-instance-profile Name=web-server-profile \
+--user-data file://nginx-install.sh
 
-# Terminate Web Server
+# ── Terminate Web Server ────────────────────────────────────────────────────
 
-```
 # Get Instance ID & Terminate
 INSTANCE_ID=$(aws ec2 describe-instances \
 --filters "Name=tag:Name,Values=web-server" \
@@ -65,4 +64,3 @@ echo $INSTANCE_ID
 aws ec2 terminate-instances \
 --instance-ids $INSTANCE_ID \
 --region us-east-1
-```

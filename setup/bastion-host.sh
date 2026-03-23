@@ -1,6 +1,7 @@
-# Configure Bastion Host
+#!/bin/bash
 
-```
+# ── Configure Bastion Host ──────────────────────────────────────────────────
+
 # Get VPC ID
 VPC_ID=$(aws ec2 describe-vpcs \
 --query "Vpcs[].VpcId" \
@@ -27,11 +28,9 @@ aws ec2 authorize-security-group-ingress \
 --protocol tcp \
 --port 22 \
 --cidr 0.0.0.0/0
-```
 
-# Launch Bastion Host
+# ── Launch Bastion Host ─────────────────────────────────────────────────────
 
-```
 # Get Security Group ID
 SG_ID=$(aws ec2 describe-security-groups \
 --filters "Name=group-name,Values=bastion-host-sg" \
@@ -49,11 +48,9 @@ aws ec2 run-instances \
 --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=bastion-host}]' \
 --security-group-ids $SG_ID \
 --key-name vockey
-```
 
-# Terminate Bastion Host
+# ── Terminate Bastion Host ──────────────────────────────────────────────────
 
-```
 # Get Instance ID & Terminate
 INSTANCE_ID=$(aws ec2 describe-instances \
 --filters "Name=tag:Name,Values=bastion-host" \
@@ -65,4 +62,3 @@ echo $INSTANCE_ID
 aws ec2 terminate-instances \
 --instance-ids $INSTANCE_ID \
 --region us-east-1
-```
