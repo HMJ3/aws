@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # Terminate Web Server
-
 echo "Terminating instance"
 
 # Get Instance ID & Terminate

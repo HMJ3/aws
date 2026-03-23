@@ -1,12 +1,10 @@
 #!/bin/bash
 
 # Create Instance Profile
-
 aws iam create-instance-profile \
     --instance-profile-name lab-instance-profile-bastion
 
 # Add Role To Profile (instance profile works as a wrapper for a role)
-
 aws iam add-role-to-instance-profile \
     --role-name LabRole \
     --instance-profile-name lab-instance-profile-bastion

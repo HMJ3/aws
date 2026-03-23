@@ -3,18 +3,15 @@
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Create Instance Profile
-
 aws iam create-instance-profile \
     --instance-profile-name lab-instance-profile-webserver
 
 # Add Role To Profile
-
 aws iam add-role-to-instance-profile \
     --role-name LabRole \
     --instance-profile-name lab-instance-profile-webserver
 
 # Create S3 Bucket
-
 BUCKET_NAME="web-bucket-$(openssl rand -hex 6)"
 echo "Bucket name: $BUCKET_NAME"
 
@@ -23,7 +20,6 @@ aws s3api create-bucket \
     --region us-east-1
 
 # Upload index.html to Bucket
-
 aws s3 cp $SCRIPT_DIR/index.html s3://$BUCKET_NAME/index.html \
     --content-type "text/html"
 
@@ -56,7 +52,6 @@ aws ec2 authorize-security-group-ingress \
     --cidr 0.0.0.0/0
 
 # Launch Web Server
-
 aws ec2 run-instances \
     --image-id ami-02dfbd4ff395f2a1b \
     --count 1 \

@@ -77,19 +77,6 @@ Created instances: web-server-profile (16.2.2026)
 ```
 aws iam create-instance-profile \
     --instance-profile-name web-server-profile
-
-Output
-{
-    "InstanceProfile": {
-        "Path": "/",
-        "InstanceProfileName": "web-server-profile",
-        "InstanceProfileId": "AIPAUDEYC4QMZRDHUNTMN",
-        "Arn": "arn:aws:iam::281639314457:instance-profile/web-server-profile",
-        "CreateDate": "2026-03-16T11:33:05+00:00",
-        "Roles": []
-    }
-}
-
 ```
 
 ### Manage Profiles
@@ -134,7 +121,7 @@ aws ec2 associate-iam-instance-profile \
   --iam-instance-profile Name=web-server-profile
 ```
 
-### Final EC2 instance command
+### EC2 run instance command
 ```
 SG_ID=$(aws ec2 describe-security-groups \
 --filters "Name=group-name,Values=web-server-sg" \
