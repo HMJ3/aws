@@ -67,3 +67,18 @@ aws ec2 run-instances \
     --key-name vockey \
     --iam-instance-profile Name=lab-instance-profile-webserver \
     --user-data file://$SCRIPT_DIR/nginx-install.sh
+
+# Get instance ID
+INSTANCE_ID=$(aws ec2 describe-instances \
+    --filters "Name=tag:Name,Values=web-server" "Name=instance-state-name,Values=running" \
+    --query "Reservations[0].Instances[0].InstanceId" \
+    --output text)
+
+# Wait for instance to be ready
+aws ec2 wait instance-status-ok --instance-ids $INSTANCE_ID
+
+# Sync S3 bucket to nginx web root
+aws ssm send-command \
+    --instance-ids $INSTANCE_ID \
+    --document-name "AWS-RunShellScript" \
+    --parameters "commands=['aws s3 sync s3://$BUCKET_NAME /usr/share/nginx/html']"
