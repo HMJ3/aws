@@ -22,3 +22,5 @@ Create S3 bucket - "/web-bucket879457512-new"
 Upload to bucket - aws s3 cp /home/ec2-user/setup-files/website/* s3://web-bucket879457512-new/index.html --content-type "text/html"
 config web-server
 launch web-server
+
+
