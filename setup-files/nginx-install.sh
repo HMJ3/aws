@@ -1,4 +1,4 @@
-#! /bin/basch
+#! /bin/bash
 
 #Install NGINX
 yum update -y

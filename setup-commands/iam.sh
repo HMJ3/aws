@@ -10,7 +10,7 @@ aws iam create-instance-profile \
 aws iam delete-instance-profile \
     --instance-profile-name lab-instance-profile
 
-# ── Add Profile to Role ─────────────────────────────────────────────────────
+# ── Add Role To Profile (instance profile works as a wrapper for a role) ─────────────────────────────────────────────────────
 
 aws iam add-role-to-instance-profile \
     --role-name LabRole \

@@ -8,3 +8,6 @@
 aws s3api create-bucket \
 --bucket web-bucket8797512 \
 --region us-east-1
+
+# ── Upload index.html ────────────────────────────────────────────────────────
+aws s3 cp setup-files/website/index.html s3://web-bucket8797512/index.html --content-type "text/html"
