@@ -3,34 +3,34 @@
 # ── Create Instance Profile ─────────────────────────────────────────────────
 
 aws iam create-instance-profile \
-    --instance-profile-name web-server-profile
+    --instance-profile-name lab-instance-profile
 
 # ── Delete Instance Profile ─────────────────────────────────────────────────
 
 aws iam delete-instance-profile \
-    --instance-profile-name 'web-server-profile'
+    --instance-profile-name lab-instance-profile
 
 # ── Add Profile to Role ─────────────────────────────────────────────────────
 
 aws iam add-role-to-instance-profile \
     --role-name LabRole \
-    --instance-profile-name web-server-profile
+    --instance-profile-name lab-instance-profile
 
 # ── Remove Profile from Role ────────────────────────────────────────────────
 
 aws iam remove-role-from-instance-profile \
 --role-name LabRole \
---instance-profile-name web-server-profile
+--instance-profile-name lab-instance-profile
 
 # ── Attach Role to Running EC2 Instance ────────────────────────────────────
 
-BASTION_ID=$(aws ec2 describe-instances \
+INSTANCE_ID=$(aws ec2 describe-instances \
 --filters "Name=tag:Name,Values=bastion-host" \
 --query "Reservations[].Instances[].InstanceId" \
 --output text)
 
-echo $BASTION_ID
+echo $INSTANCE_ID
 
 aws ec2 associate-iam-instance-profile \
-  --instance-id $BASTION_ID \
-  --iam-instance-profile Name=web-server-profile
+  --instance-id $INSTANCE_ID \
+  --iam-instance-profile Name=lab-instance-profile

@@ -47,7 +47,8 @@ aws ec2 run-instances \
 --region us-east-1 \
 --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=bastion-host}]' \
 --security-group-ids $SG_ID \
---key-name vockey
+--key-name vockey \
+--iam-instance-profile Name=lab-instance-profile
 
 # ── Terminate Bastion Host ──────────────────────────────────────────────────
 
