@@ -16,8 +16,9 @@ aws ec2 create-security-group \
 # Get Security Group ID
 SG_ID=$(aws ec2 describe-security-groups \
 --filters "Name=group-name,Values=web-server-sg" \
---query 'SecurityGroups[0].GroupId'  \
+--query 'SecurityGroups[0].GroupId' \
 --output text)
+
 echo $SG_ID
 
 # Add Security Group Rule
@@ -34,8 +35,9 @@ aws ec2 authorize-security-group-ingress \
 # Get Security Group ID
 SG_ID=$(aws ec2 describe-security-groups \
 --filters "Name=group-name,Values=web-server-sg" \
---query 'SecurityGroups[0].GroupId'  \
+--query 'SecurityGroups[0].GroupId' \
 --output text)
+
 echo $SG_ID
 
 # Launch Instance
@@ -50,6 +52,7 @@ aws ec2 run-instances \
 ```
 
 # Terminate Web Server
+
 ```
 # Get Instance ID & Terminate
 INSTANCE_ID=$(aws ec2 describe-instances \
