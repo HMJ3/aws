@@ -97,17 +97,25 @@ Output
 Source - https://stackoverflow.com/a/72966105
 
 ```
+# delete instance profile
 aws iam delete-instance-profile \
-    --instance-profile-name 'your-profile-name'
+    --instance-profile-name 'web-server-profile'
 ```
 
-aws iam remove-role-from-instance-profile \
-    --role-name ExistingRole \
-    --instance-profile-name web-server-profile
-
+```
+# add profile to role
 aws iam add-role-to-instance-profile \
     --role-name LabRole \
     --instance-profile-name web-server-profile
+```
+
+```
+# remove profile from role
+aws iam remove-role-from-instance-profile \
+--role-name LabRole \
+--instance-profile-name web-server-profile
+```
+
 
 ### Add to running EC2 instance
 ```
