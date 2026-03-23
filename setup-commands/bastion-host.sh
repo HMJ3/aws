@@ -59,9 +59,9 @@ aws ec2 run-instances \
 --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=bastion-host}]' \
 --security-group-ids $SG_ID \
 --key-name vockey \
---iam-instance-profile Name=lab-instance-profile
+--iam-instance-profile Name=lab-instance-profile-bastion
 
-# Terminate Bastion Host
+# TERMINATE BASTION HOST AND DEPENDENCIES
 
 # Get Instance ID & Terminate
 INSTANCE_ID=$(aws ec2 describe-instances \
@@ -74,3 +74,25 @@ echo $INSTANCE_ID
 aws ec2 terminate-instances \
 --instance-ids $INSTANCE_ID \
 --region us-east-1
+
+# Wait for instance to terminate
+aws ec2 wait instance-terminated \
+--instance-ids $INSTANCE_ID \
+--region us-east-1
+
+echo "Deleting security group"
+
+# Delete security group
+aws ec2 delete-security-group \
+--group-name bastion-host-sg
+
+echo "Web server and security group deleted."
+
+# Remove Profile from Role
+aws iam remove-role-from-instance-profile \
+--role-name LabRole \
+--instance-profile-name lab-instance-profile-bastion
+
+# Delete Instance Profile
+aws iam delete-instance-profile \
+    --instance-profile-name lab-instance-profile-bastion
