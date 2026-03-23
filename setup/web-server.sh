@@ -48,7 +48,7 @@ aws ec2 run-instances \
 --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=web-server}]' \
 --security-group-ids $SG_ID \
 --key-name vockey \
---iam-instance-profile Name=web-server-profile \
+--iam-instance-profile Name=lab-instance-profile \
 --user-data file://nginx-install.sh
 
 # ── Terminate Web Server ────────────────────────────────────────────────────
