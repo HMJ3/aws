@@ -4,28 +4,39 @@ Guide to github markdown syntax - [Read Guide](https://docs.github.com/en/get-st
 
 Link to learner lab - [Access Lab](https://awsacademy.instructure.com/courses/149548/modules/items/14489920)
 
-### List instance profiles
+# Setup
+```
+#list instance profiles
 aws iam list-instance-profiles
 
-lab-instance-profile
-LabInstanceProfile
+Current profiles:
 
-### Download Files as Zip
+- lab-instance-profile
+- LabInstanceProfile
+````
 
-### Transfer Files with SCP
+Download Files as Zip
+```
+#transfer Files with SCP
 scp -i labsuser.pem \
 package.zip \
 ec2-user@3.91.174.252:~/
+```
 
-### Unzip
+Unzip
+```
 unzip setup-files.zip
+```
 
-### Add execute permissions
+Edit permissions
+```
 chmod +x launch.sh
+```
 
-### Run code
+Run code
+```
 ./launch.sh
-
+```
 
 
 
