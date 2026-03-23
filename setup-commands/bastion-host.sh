@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# ── Configure Bastion Host ──────────────────────────────────────────────────
+# Configure Bastion Host
 
 # Get VPC ID
 VPC_ID=$(aws ec2 describe-vpcs \
@@ -29,7 +29,7 @@ aws ec2 authorize-security-group-ingress \
 --port 22 \
 --cidr 0.0.0.0/0
 
-# ── Launch Bastion Host ─────────────────────────────────────────────────────
+# Launch Bastion Host
 
 # Get Security Group ID
 SG_ID=$(aws ec2 describe-security-groups \
@@ -50,7 +50,7 @@ aws ec2 run-instances \
 --key-name vockey \
 --iam-instance-profile Name=lab-instance-profile
 
-# ── Terminate Bastion Host ──────────────────────────────────────────────────
+# Terminate Bastion Host
 
 # Get Instance ID & Terminate
 INSTANCE_ID=$(aws ec2 describe-instances \

@@ -1,6 +1,8 @@
 #!/bin/bash
 
-# Create Instance Profile 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Create Instance Profile
 
 aws iam create-instance-profile \
     --instance-profile-name lab-instance-profile-webserver
@@ -22,7 +24,7 @@ aws s3api create-bucket \
 
 # Upload index.html to Bucket
 
-aws s3 cp setup-files/website/index.html s3://$BUCKET_NAME/index.html \
+aws s3 cp $SCRIPT_DIR/index.html s3://$BUCKET_NAME/index.html \
     --content-type "text/html"
 
 # Configure Web Server
@@ -64,4 +66,4 @@ aws ec2 run-instances \
     --security-group-ids $SG_ID \
     --key-name vockey \
     --iam-instance-profile Name=lab-instance-profile-webserver \
-    --user-data file://setup-files/nginx-install.sh
+    --user-data file://$SCRIPT_DIR/nginx-install.sh

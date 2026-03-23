@@ -1,6 +1,6 @@
 #! /bin/bash
 
-#Install NGINX
+# Install NGINX
 yum update -y
 yum install -y nginx aws-cli
 

@@ -10,35 +10,37 @@ Upload to bucket - aws s3 cp /home/ec2-user/setup-files/website/* s3://web-bucke
 config web-server
 launch web-server
 
-# ── Create Instance Profile ─────────────────────────────────────────────────
+# Create Instance Profile
 
 aws iam create-instance-profile \
     --instance-profile-name lab-instance-profile
 
-# ── Add Role To Profile (instance profile works as a wrapper for a role) ─────────────────────────────────────────────────────
+# Add Role To Profile (instance profile works as a wrapper for a role)
 
 aws iam add-role-to-instance-profile \
     --role-name LabRole \
     --instance-profile-name lab-instance-profile
 
 
-# LAUNCH BASTION FROM bastion-host.sh
-# CONFIGURE AWS CLI
+# Launch Bastion from bastion-host.sh
 
-# DOWNLOAD FILES AS ZIP
-# TRANSFER FILES WITH SCP
+# Configure AWS CLI
+
+# Download Files as Zip
+
+# Transfer Files with SCP
 scp -i labsuser.pem setup-files.zip ec2-user@32.195.48.216:~/
 unzip setup-files.zip
 
-# CREATE S3 BUCKET
+# Create S3 Bucket
 aws s3api create-bucket \
 --bucket web-bucket8797512 \
 --region us-east-1
 
-# GET BUCKET NAME
+# Get Bucket Name
 # Copy the bucket name and add to the command below
 
-# UPLOAD FILES TO BUCKET
+# Upload Files to Bucket
 aws s3 cp setup-files/website/index.html s3://web-bucket8797512/index.html --content-type "text/html"
 
-# CONFIG AND LAUNCH WEB-SERVER from web-server.sh
+# Configure and Launch Web Server from web-server.sh

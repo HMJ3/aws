@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# ── Configure Web Server ────────────────────────────────────────────────────
+# Configure Web Server
 
 # Get VPC ID
 VPC_ID=$(aws ec2 describe-vpcs \
@@ -29,7 +29,7 @@ aws ec2 authorize-security-group-ingress \
 --port 80 \
 --cidr 0.0.0.0/0
 
-# ── Launch Web Server ───────────────────────────────────────────────────────
+# Launch Web Server
 
 # Get Security Group ID
 SG_ID=$(aws ec2 describe-security-groups \
@@ -51,7 +51,7 @@ aws ec2 run-instances \
 --iam-instance-profile Name=lab-instance-profile \
 --user-data file://nginx-install.sh
 
-# ── Terminate Web Server ────────────────────────────────────────────────────
+# Terminate Web Server
 
 # Get Instance ID & Terminate
 INSTANCE_ID=$(aws ec2 describe-instances \
