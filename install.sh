@@ -2,7 +2,7 @@
 
 # Create S3 Bucket - upload files
 aws s3api create-bucket \
-    --bucket web-bucket8797512 \
+    --bucket web-bucket879457512-new \
     --region us-east-1
 
 # Create Instance Profile
