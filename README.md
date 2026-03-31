@@ -5,15 +5,6 @@ Guide to github markdown syntax - [Read Guide](https://docs.github.com/en/get-st
 Link to learner lab - [Access Lab](https://awsacademy.instructure.com/courses/149548/modules/items/14489920)
 
 # setup
-```
-#list instance profiles
-aws iam list-instance-profiles
-
-Current profiles:
-
-- lab-instance-profile
-- LabInstanceProfile
-````
 
 Download Files as Zip
 ```
