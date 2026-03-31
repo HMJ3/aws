@@ -2,27 +2,14 @@
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# Configuration
-INSTANCE_PROFILE_NAME="lab-instance-profile-webserver"
-ROLE_NAME="LabRole"
-REGION="us-east-1"
-IMAGE_ID="ami-02dfbd4ff395f2a1b"
-INSTANCE_TYPE="t3.micro"
-INSTANCE_NAME="web-server"
-SG_NAME="web-server-sg"
-SG_DESCRIPTION="security group for web server"
-KEY_NAME="vockey"
-SSM_DOCUMENT="AWS-RunShellScript"
-NGINX_WEB_ROOT="/usr/share/nginx/html"
-
 # Create Instance Profile
 aws iam create-instance-profile \
-    --instance-profile-name $INSTANCE_PROFILE_NAME
+    --instance-profile-name lab-instance-profile-webserver
 
 # Add Role To Profile
 aws iam add-role-to-instance-profile \
-    --role-name $ROLE_NAME \
-    --instance-profile-name $INSTANCE_PROFILE_NAME
+    --role-name LabRole \
+    --instance-profile-name lab-instance-profile-webserver
 
 # Create S3 Bucket
 BUCKET_NAME="web-bucket-$(openssl rand -hex 6)"
@@ -30,7 +17,7 @@ echo "Bucket name: $BUCKET_NAME"
 
 aws s3api create-bucket \
     --bucket $BUCKET_NAME \
-    --region $REGION
+    --region us-east-1
 
 # Upload index.html to Bucket
 aws s3 cp $SCRIPT_DIR/index.html s3://$BUCKET_NAME/index.html \
@@ -46,13 +33,13 @@ echo "VPC ID: $VPC_ID"
 
 # Create Security Group
 aws ec2 create-security-group \
-    --group-name $SG_NAME \
-    --description "$SG_DESCRIPTION" \
+    --group-name web-server-sg \
+    --description "security group for web server" \
     --vpc-id $VPC_ID
 
 # Get Security Group ID
 SG_ID=$(aws ec2 describe-security-groups \
-    --filters "Name=group-name,Values=$SG_NAME" \
+    --filters "Name=group-name,Values=web-server-sg" \
     --query 'SecurityGroups[0].GroupId' \
     --output text)
 echo "Security Group ID: $SG_ID"
@@ -66,19 +53,19 @@ aws ec2 authorize-security-group-ingress \
 
 # Launch Web Server
 aws ec2 run-instances \
-    --image-id $IMAGE_ID \
+    --image-id ami-02dfbd4ff395f2a1b \
     --count 1 \
-    --instance-type $INSTANCE_TYPE \
-    --region $REGION \
-    --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$INSTANCE_NAME}]" \
+    --instance-type t3.micro \
+    --region us-east-1 \
+    --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=web-server}]' \
     --security-group-ids $SG_ID \
-    --key-name $KEY_NAME \
-    --iam-instance-profile Name=$INSTANCE_PROFILE_NAME \
+    --key-name vockey \
+    --iam-instance-profile Name=lab-instance-profile-webserver \
     --user-data file://$SCRIPT_DIR/nginx-install.sh
 
 # Get instance ID
 INSTANCE_ID=$(aws ec2 describe-instances \
-    --filters "Name=tag:Name,Values=$INSTANCE_NAME" "Name=instance-state-name,Values=running" \
+    --filters "Name=tag:Name,Values=web-server" "Name=instance-state-name,Values=running" \
     --query "Reservations[0].Instances[0].InstanceId" \
     --output text)
 
@@ -88,5 +75,5 @@ aws ec2 wait instance-status-ok --instance-ids $INSTANCE_ID
 # Sync S3 bucket to nginx web root
 aws ssm send-command \
     --instance-ids $INSTANCE_ID \
-    --document-name "$SSM_DOCUMENT" \
-    --parameters "commands=['aws s3 sync s3://$BUCKET_NAME $NGINX_WEB_ROOT']"
+    --document-name "AWS-RunShellScript" \
+    --parameters "commands=['aws s3 sync s3://$BUCKET_NAME /usr/share/nginx/html']"
