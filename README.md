@@ -6,27 +6,15 @@ Link to learner lab - [Access Lab](https://awsacademy.instructure.com/courses/14
 
 # setup
 
-Download Files as Zip
-```
-#transfer Files with SCP
-scp -i labsuser.pem \
-package.zip \
-ec2-user@3.91.174.252:~/
-```
-
-Unzip
-```
-unzip setup-files.zip
-```
+Download package
 
 Edit permissions
 ```
 chmod +x launch.sh
 ```
-
 Run code
 ```
-./launch.sh
+./launch.sh my-web-server
 ```
 
 
