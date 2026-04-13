@@ -12,11 +12,15 @@ aws iam add-role-to-instance-profile \
 # Remove Profile from Role
 aws iam remove-role-from-instance-profile \
 --role-name LabRole \
---instance-profile-name lab-instance-profile
+--instance-profile-name lab-instance-profile-webserver
 
 # Delete Instance Profile
 aws iam delete-instance-profile \
-    --instance-profile-name lab-instance-profile
+    --instance-profile-name lab-instance-profile-webserver
+
+# List instance profiles for role
+aws iam list-instance-profiles-for-role \
+  --role-name LabRole
 
 # Attach Role to Running EC2 Instance
 INSTANCE_ID=$(aws ec2 describe-instances \

@@ -3,7 +3,7 @@
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Configuration
-INSTANCE_PROFILE_NAME="lab-instance-profile-webserver"
+INSTANCE_PROFILE_NAME="LabInstanceProfile"
 ROLE_NAME="LabRole"
 REGION="us-east-1"
 IMAGE_ID="ami-02dfbd4ff395f2a1b"
@@ -16,8 +16,8 @@ SSM_DOCUMENT="AWS-RunShellScript"
 NGINX_WEB_ROOT="/usr/share/nginx/html"
 
 # Create Instance Profile
-aws iam create-instance-profile \
-    --instance-profile-name $INSTANCE_PROFILE_NAME
+#aws iam create-instance-profile \
+#    --instance-profile-name $INSTANCE_PROFILE_NAME
 
 # Add Role To Profile
 aws iam add-role-to-instance-profile \
@@ -90,3 +90,9 @@ aws ssm send-command \
     --instance-ids $INSTANCE_ID \
     --document-name "$SSM_DOCUMENT" \
     --parameters "commands=['aws s3 sync s3://$BUCKET_NAME $NGINX_WEB_ROOT']"
+
+    aws ssm send-command \
+    --instance-ids $INSTANCE_ID \
+    --document-name "$SSM_DOCUMENT" \
+    --parameters "commands=['aws s3 sync s3://$BUCKET_NAME $NGINX_WEB_ROOT']"
+
