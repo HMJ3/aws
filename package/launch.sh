@@ -2,9 +2,8 @@
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-INSTANCE_NAME="${1:-web-server}"
-
 # Configuration
+INSTANCE_NAME="${1:-web-server}"
 INSTANCE_PROFILE_NAME="LabInstanceProfile"
 ROLE_NAME="LabRole"
 REGION="us-east-1"
