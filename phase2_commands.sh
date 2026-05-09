@@ -1,21 +1,21 @@
 #!/bin/bash
 
 # Replace these values before running:
-# YOUR_INSTANCE_ID  = i-0abc123def456789
+# YOUR_INSTANCE_ID  = i-0842c143351e4cf44
 # YOUR_REGION       = us-east-1
-# YOUR_TOPIC_ARN    = the ARN printed after you create the topic
+# YOUR_TOPIC_ARN    = arn:aws:sns:us-east-1:281639314457:phase2-alerts
 
 # 1. Create the SNS topic
 aws sns create-topic \
     --name phase2-alerts \
-    --region YOUR_REGION
+    --region us-east-1
 
 # 2. Subscribe your email (paste the TopicArn from step 1)
 aws sns subscribe \
-    --topic-arn YOUR_TOPIC_ARN \
+    --topic-arn arn:aws:sns:us-east-1:281639314457:phase2-alerts \
     --protocol email \
     --notification-endpoint henrik.einola@gmail.com \
-    --region YOUR_REGION
+    --region us-east-1
 
 # Go to your email and click the confirmation link before continuing
 
@@ -29,9 +29,9 @@ aws cloudwatch put-metric-alarm \
     --evaluation-periods 1 \
     --threshold 70 \
     --comparison-operator GreaterThanThreshold \
-    --dimensions Name=InstanceId,Value=YOUR_INSTANCE_ID \
-    --alarm-actions YOUR_TOPIC_ARN \
-    --region YOUR_REGION
+    --dimensions Name=InstanceId,Value=i-0842c143351e4cf44 \
+    --alarm-actions arn:aws:sns:us-east-1:281639314457:phase2-alerts \
+    --region us-east-1
 
 # 4. Status check alarm
 aws cloudwatch put-metric-alarm \
@@ -43,6 +43,6 @@ aws cloudwatch put-metric-alarm \
     --evaluation-periods 2 \
     --threshold 1 \
     --comparison-operator GreaterThanOrEqualToThreshold \
-    --dimensions Name=InstanceId,Value=YOUR_INSTANCE_ID \
-    --alarm-actions YOUR_TOPIC_ARN \
-    --region YOUR_REGION
+    --dimensions Name=InstanceId,Value=i-0842c143351e4cf44 \
+    --alarm-actions arn:aws:sns:us-east-1:281639314457:phase2-alerts \
+    --region us-east-1
